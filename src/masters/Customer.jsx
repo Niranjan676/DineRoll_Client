@@ -6,11 +6,11 @@ import axios from 'axios';
 
 function Customer() {
 
-  const [customerDtls, setCustomerDtls] = useState({name: "", phone: "", address: "", gst: ""})
+  const [customerDtls, setCustomerDtls] = useState({name: "", phone: "", address: "", gst: "", status: "Active"})
   const [addCustomer, setAddCustomer] = useState([])
   const [updateCustomer, setUpdateCustomer] = useState(null)
   const [searchCustomer, setSearchCustomer] = useState("")
-  const [error, setError] = useState({name: "", phone: "", address: ""})
+  const [error, setError] = useState({name: "", phone: "", address: "", status: "Active"})
 
   useEffect(()=>{
     getCustomer()
@@ -23,7 +23,7 @@ function Customer() {
   //Clearing the form inputs
 
   const handleClear = () =>{
-    setCustomerDtls({name: "", phone: "", address: "", gst: ""})
+    setCustomerDtls({name: "", phone: "", address: "", gst: "", status: "Active"})
   }
 
   //Adding data to the form list
@@ -31,13 +31,14 @@ function Customer() {
   const getCustomer = async()=>{
     try{
       const response = await axios.get("http://localhost:8000/customer");
-      setAddCustomer(response.data)
+      setAddCustomer(response.data.data)
     }catch(err){
       console.log(err)
     }
   }
 
   const handleSave = async () =>{
+
       if(!validateForm()){
         return
       }
@@ -55,14 +56,14 @@ function Customer() {
         // setAddCustomer(customerCopy)
 
         try{
-          await axios.post("http://localhost:8000/customer", customerDtls)
+          await axios.post("http://localhost:8000/customer/customer", customerDtls)
           alert("Customer added auccessfully")
-          getCustomer()
+          getCustomer()  
         }catch(err){
-          console.log(err)
+          console.log("Error", err)
         }
       }
-        setCustomerDtls({name: "", phone: "", address: "", gst: ""})
+        setCustomerDtls({name: "", phone: "", address: "", gst: "", status: "Active"})
   }
 
   //Editing the customer information
@@ -85,8 +86,6 @@ function Customer() {
   const handleSearch = (e)=>{
     setSearchCustomer(e.target.value)
   }
-
-  console.log(searchCustomer)
 
   //Search Filter
 
@@ -143,6 +142,9 @@ function Customer() {
             <label htmlFor="address" className='mb-1'>Address</label>
             <textarea type="text"  className='border rounded px-3 py-2' id="address" value={customerDtls.address} onChange={handleChange}/>
             <p>{error.address}</p>
+          </div>
+          <div className='flex items-center'>
+            <h3>Status: <span className='text-green-600'>{customerDtls.status}</span></h3>
           </div>
         </div>
         <div className='mt-6 flex gap-3'>

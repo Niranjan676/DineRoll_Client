@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 function Material() {
 
-  const [materialName, setMaterialName] = useState({name: "", gsm: "", unit: ""})
+  const [materialName, setMaterialName] = useState({name: "", gsm: "", unit: "", status: "Active"})
   const [addMaterial, setAddMaterial] = useState([])
   const [editMaterial, setEditMaterial] = useState(null)
   const [searchMaterial, setSearchMaterial] = useState("")
@@ -87,13 +87,13 @@ function Material() {
         console.log("Error: ", err)
       }
     }
-    setMaterialName({name: "", gsm: "", unit: ""})
+    setMaterialName({name: "", gsm: "", unit: "", status: "Active"})
   }
 
   //Clearing the header form
 
   const handleClear = () =>{
-    setMaterialName({name: "", gsm: "", unit: ""})
+    setMaterialName({name: "", gsm: "", unit: "", status: "Active"})
     setError({name: "", gsm: "", unit: ""})
   }
 
@@ -104,17 +104,24 @@ function Material() {
     setMaterialName({
       name: editMaterialId.name ?? "",
       gsm: editMaterialId.gsm ?? "",
-      unit: editMaterialId.unit ?? ""
+      unit: editMaterialId.unit ?? "",
+      status: editMaterialId.status ?? "Active"
     })
     setEditMaterial(id)
   }
 
   //Deleting the Materials fro list
-  const handleDelete = (id) =>{
-    const deleteMaterial = addMaterial.filter((item)=>{
-      return item.id !== id
-    })
-    setAddMaterial(deleteMaterial)
+  const handleDelete = async (id) =>{
+    try{
+      await axios.patch(`http://localhost:8000/material/material/${id}/inactive`)
+      getMaterial()
+    }catch(err){
+      console.log(err)
+    }
+    // const deleteMaterial = addMaterial.filter((item)=>{
+    //   return item.id !== id
+    // })
+    // setAddMaterial(deleteMaterial)
   }
   
   const handleSearch = (e)=>{
@@ -122,7 +129,8 @@ function Material() {
   }
 
   const filteredMaterial = addMaterial.filter((item)=>{
-   return item.name.toLowerCase().includes(searchMaterial.toLowerCase())
+   return (item.status === "Active" &&
+            item.name.toLowerCase().includes(searchMaterial.toLowerCase()))
   })
 
   return (
