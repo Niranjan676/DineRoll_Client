@@ -7,6 +7,7 @@ import Customer from './masters/Customer'
 import Product from './masters/Product'
 import Expense from './masters/Expense'
 import Purchase from './transactions/Purchase'
+import Production from './transactions/Production'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/product' element={<Product />}/>
         <Route path='/expense' element={<Expense />}/>
         <Route path='/purchase' element={<Purchase />}/>
+        <Route path='/production' element={<Production />}/>
       </Route>
     </Routes>
   )

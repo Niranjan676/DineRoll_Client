@@ -12,10 +12,6 @@ function Customer() {
   const [searchCustomer, setSearchCustomer] = useState("")
   const [error, setError] = useState({name: "", phone: "", address: "", status: "Active"})
 
-  useEffect(()=>{
-    getCustomer()
-  }, [])
-
   const handleChange = (e)=>{
     setCustomerDtls({...customerDtls, [e.target.id]: e.target.value})
   }
@@ -24,6 +20,7 @@ function Customer() {
 
   const handleClear = () =>{
     setCustomerDtls({name: "", phone: "", address: "", gst: "", status: "Active"})
+    setError({name: "", phone: "", address: "", status: "Active"})
   }
 
   //Adding data to the form list
@@ -37,6 +34,10 @@ function Customer() {
     }
   }
 
+  useEffect(()=>{
+    getCustomer()
+  }, [])
+
   const handleSave = async () =>{
 
       if(!validateForm()){
@@ -44,11 +45,19 @@ function Customer() {
       }
       
       if(updateCustomer){   
-        const updatedId = addCustomer.map((customer)=>(
-          customer.id === updateCustomer ? {...customerDtls, id: updateCustomer} : customer
-        ))
-        setAddCustomer(updatedId)
-        setUpdateCustomer(null)
+        // const updatedId = addCustomer.map((customer)=>(
+        //   customer.id === updateCustomer ? {...customerDtls, id: updateCustomer} : customer
+        // ))
+        // setAddCustomer(updatedId)
+        // setUpdateCustomer(null)
+        try{
+          await axios.put(`http://localhost:8000/customer/updatecustomer/${updateCustomer}`, customerDtls)
+          getCustomer()
+          setUpdateCustomer(null)
+        }catch(err){
+          console.log(err)
+        }
+
       }else{
         // const customerId = {id: Date.now(), ...customerDtls}
         // let customerCopy = [...addCustomer]
@@ -76,11 +85,17 @@ function Customer() {
     setUpdateCustomer(id)
   }
 
-  const handleDelete = (id)=>{
-    const deleteCustomer = addCustomer.filter((customer)=>{
-      return customer.id !== id
-    })
-    setAddCustomer(deleteCustomer)
+  const handleDelete = async (id)=>{
+    // const deleteCustomer = addCustomer.filter((customer)=>{
+    //   return customer.id !== id
+    // })
+    // setAddCustomer(deleteCustomer)
+    try{
+      await axios.patch(`http://localhost:8000/customer/customer/${id}/inactive`)
+      getCustomer()
+    }catch(err){
+      console.log("Error: ", err)
+    }
   }
 
   const handleSearch = (e)=>{
@@ -90,7 +105,8 @@ function Customer() {
   //Search Filter
 
   const filterCustomer = addCustomer.filter((item)=>{
-    return item.name.toLowerCase().includes(searchCustomer.toLowerCase())
+    return (item.status === "Active" &&
+            item.name.toLowerCase().includes(searchCustomer.toLowerCase()))
   })
 
   //Error Inputs
@@ -127,12 +143,12 @@ function Customer() {
           <div className='flex flex-col'>
             <label htmlFor="name" className='mb-1'>Customer Name</label>
             <input type="text" className='border rounded px-3 py-2' id="name" value={customerDtls.name} onChange={handleChange}/>
-            <p>{error.name}</p>
+            <p className='text-red-500'>{error.name}</p>
           </div>
           <div className='flex flex-col'>
             <label htmlFor="phone" className='mb-1'>Phone</label>
             <input type="text" className='border rounded px-3 py-2' id="phone" value={customerDtls.phone} onChange={handleChange}/>
-            <p>{error.phone}</p>
+            <p className='text-red-500'>{error.phone}</p>
           </div>
           <div className='flex flex-col'>
             <label htmlFor="gst" className='mb-1'>GST</label>
@@ -141,7 +157,7 @@ function Customer() {
           <div className='col-span-2 flex flex-col'>
             <label htmlFor="address" className='mb-1'>Address</label>
             <textarea type="text"  className='border rounded px-3 py-2' id="address" value={customerDtls.address} onChange={handleChange}/>
-            <p>{error.address}</p>
+            <p className='text-red-500'>{error.address}</p>
           </div>
           <div className='flex items-center'>
             <h3>Status: <span className='text-green-600'>{customerDtls.status}</span></h3>
