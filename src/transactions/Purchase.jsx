@@ -1,8 +1,8 @@
 import React from 'react'
 import PurchaseHeader from '../purchase_order/PurchaseHeader'
-import PurchaseTable from '../purchase_order/PurchaseTable'
+import PurchaseDetail from '../purchase_order/PurchaseDetail'
 import PurchaseSummary from '../purchase_order/PurchaseSummary'
-
+import PurchaseContext from "../context/PurchaseContext"
 function Purchase() {
   return (
     <div className='h-screen flex flex-col'>
@@ -10,9 +10,11 @@ function Purchase() {
         <h1>Purchase Order</h1>
       </div>
       <div>
-        <PurchaseHeader />
-        <PurchaseTable />
-        <PurchaseSummary/>
+        <PurchaseContext>
+          <PurchaseHeader />
+          <PurchaseDetail />
+          <PurchaseSummary/>
+        </PurchaseContext>
       </div>
     </div>
   )
