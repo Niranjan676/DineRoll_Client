@@ -3,7 +3,7 @@ import { PurchaseOrder } from '../context/PurchaseContext'
 
 function PurchaseHeader() {
 
-const {purchaseHeader, setPurchaseHeader} = useContext(PurchaseOrder)
+const {purchaseHeader, setPurchaseHeader, error} = useContext(PurchaseOrder)
 
 const handleChange = (e) =>{
     setPurchaseHeader({...purchaseHeader, [e.target.id]: e.target.value})
@@ -19,14 +19,17 @@ const handleChange = (e) =>{
           <div className='flex flex-col'>
             <label htmlFor="podate">PO Date</label>
             <input type="date" name="podate" id="podate" value={purchaseHeader.podate} className='border rounded px-3 py-2' onChange={handleChange}/>
+            <p className='text-red-600'>{error.podate}</p>
           </div>
           <div className='flex flex-col'>
             <label htmlFor="suppliername">Supplier Name</label>
             <input type="text" name="suppliername" id="suppliername" value={purchaseHeader.suppliername} className='border rounded px-3 py-2' onChange={handleChange}/>
+            <p className='text-red-600'>{error.suppliername}</p>
           </div>
           <div className='flex flex-col'>
             <label htmlFor="contactperson">Contact Person</label>
             <input type="text" name="contactperson" id="contactperson" value={purchaseHeader.contactperson} className='border rounded px-3 py-2' onChange={handleChange}/>
+            <p>{error.contactperson}</p>
           </div>
           <div className='flex flex-col'>
             <label htmlFor="phone">Phone</label>

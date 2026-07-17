@@ -1,17 +1,37 @@
 import React, { useContext, useState } from 'react'
 import { PurchaseOrder } from '../context/PurchaseContext'
+import axios from 'axios';
+import { useEffect } from 'react';
 
 function PurchaseSummary() {
-const {purchaseHeader, purchaseDetail} = useContext(PurchaseOrder)
-const [savedorder, setSavedorder] = useState([])
+const {purchaseHeader, setPurchaseHeader, purchaseDetail, setPurchaseDetail, getPoNumber, validation} = useContext(PurchaseOrder)
+// const [savedorder, setSavedorder] = useState([])
 
 
-const handleSave = () =>{
-    const purchaseRequest = {header: purchaseHeader, detail: purchaseDetail}
-    const orderCopy = [...savedorder]
-    orderCopy.push(purchaseRequest)
-    console.log(orderCopy)
+const handleSave = async() =>{
+    // const purchaseRequest = {header: purchaseHeader, detail: purchaseDetail}
+    // const orderCopy = [...savedorder]
+    // orderCopy.push(purchaseRequest)
+    // console.log(orderCopy)
+    try{
+        if(!validation()){
+            return
+        }else{
+            const purchaseRequest = {header: purchaseHeader, detail: purchaseDetail}
+            await axios.post("http://localhost:8000/purchaseorder/purchaseorder", purchaseRequest)
+            await getPoNumber()
+            setPurchaseHeader({podate: "", suppliername: "", contactperson: "", phone: "", paymentmode: "", remarks: "", status: "open"})
+            setPurchaseDetail([{itemcode: "", itemname: "", gsm: "", quantity: "", unit: "", rate: "", amount: ""}])
+        }
+
+    }catch(err){
+        console.log(err)
+    }
 }
+
+useEffect(() => {
+    getPoNumber();
+}, []);
 
 const totalItems = purchaseDetail.filter((row)=>{
     return row.itemcode !== ""
