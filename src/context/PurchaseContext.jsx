@@ -10,10 +10,9 @@ const [purchaseDetail, setPurchaseDetail] = useState([{itemcode: "", itemname: "
 const [error, setError] = useState({podate: "", suppliername: "", contactperson: "", phone: "", paymentmode: "", remarks: ""})
 
 const getPoNumber = async () => {
-    console.log("get ponumber called")
     try {
       const response = await axios.get("http://localhost:8000/purchaseorder/purchaseorder/next-ponumber");
-        setPurchaseHeader({...purchaseHeader, ponumber: response.data.poNumber});
+        setPurchaseHeader((prev)=>({...prev, ponumber: response.data.poNumber}));
     } catch (err) {
         console.log(err);
     }

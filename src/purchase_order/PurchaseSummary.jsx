@@ -18,12 +18,15 @@ const handleSave = async() =>{
             return
         }else{
             const purchaseRequest = {header: purchaseHeader, detail: purchaseDetail}
-            console.log(purchaseRequest)
+
             
             await axios.post("http://localhost:8000/purchaseorder/purchaseorder", purchaseRequest)
 
+            alert("Purchase Order Saved Successfully")
+
             setPurchaseHeader({ponumber: "", podate: "", suppliername: "", contactperson: "", phone: "", paymentmode: "", remarks: "", status: "open"})
             setPurchaseDetail([{itemcode: "", itemname: "", gsm: "", quantity: "", unit: "", rate: "", amount: ""}])
+            
             await getPoNumber()
         }
 
