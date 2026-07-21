@@ -22,32 +22,31 @@ const getPoNumber = async () => {
 
 //Purchase header validation
 const validation = () =>{
-  let isValid = true;
-  
+ let isValid = true
+ let newError = {podate: "", suppliername: "", contactperson: "", phone: "", paymentmode: "", remarks: ""}
+
+ if(!purchaseHeader.podate){
+    newError.podate = "Please select a date"
+    isValid = false
+ }else {
   const selectedDate = new Date(purchaseHeader.podate);
-  //Removing time
-  selectedDate.setHours(0, 0, 0, 0)
-  
-  const today = new Date()
-  //Removing time
-  today.setHours(0, 0, 0, 0);
+  selectedDate.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
 
-  //Clears the error if current or previous date selected
-  setError({podate: ""})
-
-  if(purchaseHeader.podate === ""){
-    setError({...error, podate: "Please select PO date"})
-    isValid = false
-  } else if(selectedDate > today){
-    setError({...error, podate: "Future date is not allowed"})
+  if(selectedDate > currentDate){
+    newError.podate = "Date cannot be in the future"
     isValid = false
   }
-  if(purchaseHeader.suppliername.trim() === ""){
-    setError({...error, suppliername:"Please select the supplier name"})
-    isValid = false
-  }
-  return isValid
+ }
+ if(!purchaseHeader.suppliername.trim()){
+  newError.suppliername = "Please enter supplier name"
+  isValid = false
+ }
+ setError(newError)
+ return isValid;
 }
+
 
   return (
     <PurchaseOrder.Provider value={{purchaseHeader, setPurchaseHeader, purchaseDetail, setPurchaseDetail, getPoNumber, validation, error }}>

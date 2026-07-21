@@ -7,11 +7,11 @@ import { useEffect } from 'react';
 
 function Material() {
 
-  const [materialName, setMaterialName] = useState({name: "", gsm: "", unit: "", status: "Active"})
+  const [materialName, setMaterialName] = useState({code: "", name: "", gsm: "", unit: "", status: "Active"})
   const [addMaterial, setAddMaterial] = useState([])
   const [editMaterial, setEditMaterial] = useState(null)
   const [searchMaterial, setSearchMaterial] = useState("")
-  const [error, setError] = useState({name: "", gsm: "", unit: ""})
+  const [error, setError] = useState({code: "", name: "", gsm: "", unit: ""})
 
   // Onchange Inputs
 
@@ -39,11 +39,15 @@ function Material() {
   //Form validation
 
   const validateForm = () =>{
-    let newError = {name: "", gsm: "", unit: ""}
+    let newError = {code: "", name: "", gsm: "", unit: ""}
     let isValid = true
     
+    if(!materialName.code.trim()){
+      newError.code = "Item code is required"
+      isValid = false
+    }
     if(!materialName.name.trim()){
-      newError.name = "Material name is required"
+      newError.name = "Item name is required"
       isValid = false
     }
     
@@ -87,14 +91,14 @@ function Material() {
         console.log("Error: ", err)
       }
     }
-    setMaterialName({name: "", gsm: "", unit: "", status: "Active"})
+    setMaterialName({code: "", name: "", gsm: "", unit: "", status: "Active"})
   }
 
   //Clearing the header form
 
   const handleClear = () =>{
-    setMaterialName({name: "", gsm: "", unit: "", status: "Active"})
-    setError({name: "", gsm: "", unit: ""})
+    setMaterialName({code: "", name: "", gsm: "", unit: "", status: "Active"})
+    setError({code: "", name: "", gsm: "", unit: ""})
   }
 
   const handleEdit = (id)=>{
@@ -102,6 +106,7 @@ function Material() {
       return item.id === id
     })
     setMaterialName({
+      code: editMaterialId.code ?? "",
       name: editMaterialId.name ?? "",
       gsm: editMaterialId.gsm ?? "",
       unit: editMaterialId.unit ?? "",
@@ -140,7 +145,12 @@ function Material() {
       </div>
       <div className='p-5 grid grid-cols-3 gap-4'>
         <div className='flex flex-col'>
-          <label htmlFor="name" className='mb-1'>Material Name</label>
+          <label htmlFor="code" className='mb-1'>Item Code</label>
+          <input type="text" className='border rounded px-3 py-2' id='code' value={materialName.code} onChange={handleChange}/>
+          <p className='text-red-500'>{error.code}</p>
+        </div>
+        <div className='flex flex-col'>
+          <label htmlFor="name" className='mb-1'>Item Name</label>
           <input type="text" className='border rounded px-3 py-2' id='name' value={materialName.name} onChange={handleChange}/>
           <p className='text-red-500'>{error.name}</p>
         </div>
@@ -169,7 +179,8 @@ function Material() {
           <thead className='bg-slate-200'>
             <tr>
               <th className='border border-slate-600'>S. No</th>
-              <th className='border border-slate-600'>Material Name</th>
+              <th className='border border-slate-600'>Item Code</th>
+              <th className='border border-slate-600'>Item Name</th>
               <th className='border border-slate-600'>GSM</th>
               <th className='border border-slate-600'>Unit</th>
               <th className='border border-slate-600'>Edit</th>
@@ -180,6 +191,7 @@ function Material() {
             {filteredMaterial.map((material, idx)=>(
               <tr key={material.id}>
               <td className='border border-slate-700 px-2 py-1'>{idx + 1}</td>
+              <td className='border border-slate-700 px-2 py-1'>{material.code}</td>
               <td className='border border-slate-700 px-2 py-1'>{material.name}</td>
               <td className='border border-slate-700 px-2 py-1'>{material.gsm}</td>
               <td className='border border-slate-700 px-2 py-1'>{material.unit}</td>

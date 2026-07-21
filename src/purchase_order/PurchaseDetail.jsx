@@ -28,12 +28,12 @@ useEffect(()=>{
 
 const handleSelectItem = (itemId, selectedItem)=>{
     const selectedmaterial = rawmaterial.find((ele)=>{
-        return ele.itemcode === selectedItem
+        return ele.code === selectedItem
     })
     if(!selectedmaterial) return;
 
     const updatedMaterial = [...purchaseDetail]
-    updatedMaterial[itemId] = {...updatedMaterial[itemId], itemcode: selectedmaterial.itemcode, itemname: selectedmaterial.name, gsm: selectedmaterial.gsm, unit: selectedmaterial.unit}
+    updatedMaterial[itemId] = {...updatedMaterial[itemId], itemcode: selectedmaterial.code, itemname: selectedmaterial.name, gsm: selectedmaterial.gsm, unit: selectedmaterial.unit}
     setPurchaseDetail(updatedMaterial)
 }
 
@@ -88,7 +88,7 @@ const handleInputChange = (idx, e)=>{
                         <select name="itemcode" id="itemcode" className="w-full border rounded" value={material.itemcode} onChange={(e)=>handleSelectItem(idx, e.target.value)}>
                             <option value="">select item</option>
                             {rawmaterial.map((ele)=>(
-                                <option key={ele.id} value={ele.itemcode}>{ele.itemcode}-{ele.name}</option>
+                                <option key={ele.id} value={ele.code}>{ele.code}-{ele.name}</option>
                             ))}
                         </select>
                     </td>
