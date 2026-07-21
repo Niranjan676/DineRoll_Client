@@ -29,11 +29,12 @@ const handleChange = (e) =>{
           <div className='flex flex-col'>
             <label htmlFor="contactperson">Contact Person</label>
             <input type="text" name="contactperson" id="contactperson" value={purchaseHeader.contactperson} className='border rounded px-3 py-2' onChange={handleChange}/>
-            <p>{error.contactperson}</p>
+            <p className='text-red-600'>{error.contactperson}</p>
           </div>
           <div className='flex flex-col'>
             <label htmlFor="phone">Phone</label>
             <input type="text" name="phone" id="phone" className='border rounded px-3 py-2' value={purchaseHeader.phone} onChange={handleChange}/>
+            <p className='text-red-600'>{error.phone}</p>
           </div>
           <div className='flex flex-col'>
             <label htmlFor="paymentmode">Payment Mode</label>
@@ -42,6 +43,7 @@ const handleChange = (e) =>{
                 <option value="cash">Cash</option>
                 <option value="gpay">Gpay</option>
             </select>
+            <p className='text-red-600'>{error.paymentmode}</p>
           </div>
           <div className='flex flex-col col-span-2'>
             <label htmlFor="remarks">Remarks</label>

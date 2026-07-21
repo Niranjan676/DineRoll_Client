@@ -43,6 +43,22 @@ const validation = () =>{
   newError.suppliername = "Please enter supplier name"
   isValid = false
  }
+ if(!purchaseHeader.contactperson.trim()){
+  newError.contactperson = "Please enter contact person"
+  isValid = false
+ }
+ if(!purchaseHeader.phone.trim()){
+  newError.phone = "Please enter phone number"
+  isValid = false
+ }
+ if(!purchaseHeader.paymentmode.trim()){
+  newError.paymentmode = "Please select payment mode"
+  isValid = false
+ }
+ if(purchaseDetail[0].itemcode === ""){
+  alert("Please select at least one item in the purchase detail")
+  isValid = false
+ }
  setError(newError)
  return isValid;
 }
