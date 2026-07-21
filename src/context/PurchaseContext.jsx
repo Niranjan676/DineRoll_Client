@@ -20,7 +20,7 @@ const getPoNumber = async () => {
 
 
 //Purchase header validation
-const validation = () =>{
+const headervalidation = () =>{
  let isValid = true
  let newError = {podate: "", suppliername: "", contactperson: "", phone: "", paymentmode: "", remarks: ""}
 
@@ -39,7 +39,7 @@ const validation = () =>{
   }
  }
  if(!purchaseHeader.suppliername.trim()){
-  newError.suppliername = "Please enter supplier name"
+  newError.suppliername = "Please select supplier name"
   isValid = false
  }
  if(!purchaseHeader.contactperson.trim()){
@@ -54,17 +54,22 @@ const validation = () =>{
   newError.paymentmode = "Please select payment mode"
   isValid = false
  }
- if(purchaseDetail[0].itemcode === ""){
-  alert("Please select at least one item in the purchase detail")
-  isValid = false
- }
  setError(newError)
  return isValid;
 }
 
+const detailvalidation = () =>{
+  let isValid = true
+
+  if(purchaseDetail[0].itemcode === ""){
+  alert("Please select at least one item in the purchase detail")
+  isValid = false
+ }
+ return isValid
+}
 
   return (
-    <PurchaseOrder.Provider value={{purchaseHeader, setPurchaseHeader, purchaseDetail, setPurchaseDetail, getPoNumber, validation, error }}>
+    <PurchaseOrder.Provider value={{purchaseHeader, setPurchaseHeader, purchaseDetail, setPurchaseDetail, getPoNumber, headervalidation, detailvalidation, error }}>
         {children}
     </PurchaseOrder.Provider>
   )

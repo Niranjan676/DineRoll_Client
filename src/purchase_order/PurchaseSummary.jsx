@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 
 function PurchaseSummary() {
-const {purchaseHeader, setPurchaseHeader, purchaseDetail, setPurchaseDetail, getPoNumber, validation} = useContext(PurchaseOrder)
+const {purchaseHeader, setPurchaseHeader, purchaseDetail, setPurchaseDetail, getPoNumber, headervalidation, detailvalidation} = useContext(PurchaseOrder)
 // const [savedorder, setSavedorder] = useState([])
 
 
@@ -14,7 +14,9 @@ const handleSave = async() =>{
     // orderCopy.push(purchaseRequest)
     // console.log(orderCopy)
     try{
-        if(!validation()){
+        if(!headervalidation()){
+            return
+        }else if(!detailvalidation()){
             return
         }else{
             const purchaseRequest = {header: purchaseHeader, detail: purchaseDetail}
