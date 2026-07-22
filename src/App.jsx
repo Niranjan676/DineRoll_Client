@@ -8,6 +8,8 @@ import Product from './masters/Product'
 import Expense from './masters/Expense'
 import Purchase from './transactions/Purchase'
 import Production from './transactions/Production'
+import PurchaseOrderList from './purchase_order/PurchaseOrderList'
+import PurchaseOrderView from './purchase_order/PurchaseOrderView'
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path='/expense' element={<Expense />}/>
         <Route path='/purchase' element={<Purchase />}/>
         <Route path='/production' element={<Production />}/>
+        <Route path='/PurchaseOrderList' element={<PurchaseOrderList />}/>
+        <Route path='/PurchaseOrderView/:id' element={<PurchaseOrderView />}></Route>
       </Route>
     </Routes>
   )

@@ -40,6 +40,7 @@ function Sidebar() {
               {showTransaction && (
               <ul className='ml-4 space-y-2'>
                 <li className='flex items-center gap-2 hover:text-yellow-300 transition-all duration-300'><span><MdOutlineDoubleArrow /></span><Link to="/purchase">Purchase Order</Link></li>
+                <li className='flex items-center gap-2 hover:text-yellow-300 transition-all duration-300'><span><MdOutlineDoubleArrow /></span><Link to="/PurchaseOrderList">Purchase Order List</Link></li>
                 <li className='flex items-center gap-2 hover:text-yellow-300 transition-all duration-300'><span><MdOutlineDoubleArrow /></span><Link to="/production">Production</Link></li>
                 <li className='flex items-center gap-2 hover:text-yellow-300 transition-all duration-300'><span><MdOutlineDoubleArrow /></span><Link>Sales</Link></li>
                 <li className='flex items-center gap-2 hover:text-yellow-300 transition-all duration-300'><span><MdOutlineDoubleArrow /></span><Link>Expense</Link></li>
