@@ -55,8 +55,19 @@ const purchaseOrderView = async (id) => {
   }
 };
 
-const PurchaseSelectedOrderEdit = () =>{
-  setOrderEdit(true)
+const PurchaseSelectedOrderEdit = async (orderid) =>{
+  try{
+    const response = await axios.get(
+      `http://localhost:8000/purchaseorder/orderview/${orderid}`
+    );
+    console.log(response.data.result)
+    setOrderEdit(true)
+    setSelectedorder(response.data.result);
+  }catch(err){
+    console.log(err)
+  }
+  // setSelectedorder()
+  // setOrderEdit(true)
 }
 
   return (
@@ -96,7 +107,7 @@ const PurchaseSelectedOrderEdit = () =>{
             </tbody>
         </table>
         {orderView && <PurchaseOrderView order= {selectedorder} onclose={()=>setOrderView(false)}/>}
-        {orderEdit && <PurchaseOrderEdit selectedOrder = {orderToEdit}/>}
+        {orderEdit && <PurchaseOrderEdit orderid = {selectedorder} setOrderId={setSelectedorder} close = {()=>setOrderEdit(false)}/>}
       </div>
     </div>
   )
