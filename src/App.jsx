@@ -10,6 +10,7 @@ import Purchase from './transactions/Purchase'
 import Production from './transactions/Production'
 import PurchaseOrderList from './purchase_order/PurchaseOrderList'
 import PurchaseOrderView from './purchase_order/PurchaseOrderView'
+import PurchaseOrderEdit from './purchase_order/PurchaseOrderEdit'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path='/production' element={<Production />}/>
         <Route path='/PurchaseOrderList' element={<PurchaseOrderList />}/>
         <Route path='/PurchaseOrderView/:id' element={<PurchaseOrderView />}></Route>
+        <Route path='/PurchaseOrderEdit/:id' element={<PurchaseOrderEdit />}></Route>
       </Route>
     </Routes>
   )

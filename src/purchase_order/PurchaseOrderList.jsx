@@ -4,14 +4,15 @@ import { FaSearch, FaEye, FaEdit } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
 // import { useNavigate } from 'react-router-dom';
 import PurchaseOrderView from './PurchaseOrderView'
+import PurchaseOrderEdit from './PurchaseOrderEdit';
 
 function PurchaseOrderList() {
 
 const [orderlist, setOrderlist] = useState([])
 const [search, setSearch] = useState("")
 const [selectedorder, setSelectedorder] = useState(null)
-const [selectedorderdetail, setSelectedorderdetail] = useState(null)
 const [orderView, setOrderView] = useState(false)
+const [orderEdit, setOrderEdit] = useState(false)
 
 // const navigate = useNavigate();
 
@@ -54,6 +55,10 @@ const purchaseOrderView = async (id) => {
   }
 };
 
+const PurchaseSelectedOrderEdit = () =>{
+  setOrderEdit(true)
+}
+
   return (
     <div className='h-screen flex flex-col'>
       <div className='text-center bg-gray-100 text-xl font-bold py-3'>
@@ -84,13 +89,14 @@ const purchaseOrderView = async (id) => {
                     <td className='border border-slate-700 px-2 py-1'>{ele.suppliername}</td>
                     <td className='border border-slate-700 px-2 py-1'>{ele.podate}</td>
                     <td className='border border-slate-700 px-2 py-1 text-center'><button className='w-8 h-8 bg-[#2596be] inline-flex items-center justify-center rounded hover:cursor-pointer' onClick={()=>purchaseOrderView(ele.id)}><FaEye className='text-white text-xl'/></button></td>
-                    <td className='border border-slate-700 px-2 py-1 text-center'><button className='w-8 h-8 bg-[#F0CC41] inline-flex items-center justify-center rounded hover:cursor-pointer'><FaEdit className='text-white text-xl'/></button></td>
+                    <td className='border border-slate-700 px-2 py-1 text-center'><button className='w-8 h-8 bg-[#F0CC41] inline-flex items-center justify-center rounded hover:cursor-pointer' onClick={()=>PurchaseSelectedOrderEdit(ele.id)}><FaEdit className='text-white text-xl'/></button></td>
                     <td className='border border-slate-700 px-2 py-1 text-center'><button className='w-8 h-8 bg-[#F03737] inline-flex items-center justify-center rounded hover:cursor-pointer'><FaDeleteLeft className='text-white text-xl'/></button></td>
                 </tr>
                 ))}
             </tbody>
         </table>
         {orderView && <PurchaseOrderView order= {selectedorder} onclose={()=>setOrderView(false)}/>}
+        {orderEdit && <PurchaseOrderEdit selectedOrder = {orderToEdit}/>}
       </div>
     </div>
   )
